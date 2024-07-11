@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import GeneralInfo from './components/GeneralInfo';
+import Education from './components/Education';
+import PracticalExperience from './components/PracticalExperience';
+import './styles/App.css';
 
-function App() {
+const App = () => {
+  const [generalInfo, setGeneralInfo] = useState({});
+  const [education, setEducation] = useState({});
+  const [experience, setExperience] = useState({});
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <h1>CV Application</h1>
+      <GeneralInfo onSubmit={(data) => setGeneralInfo(data)}/>
+      <Education onSubmit ={(data) => setEducation(data)}/>
+      <PracticalExperience onSubmit={(data) => setExperience(data)}/>
     </div>
-  );
+  )
 }
 
 export default App;
