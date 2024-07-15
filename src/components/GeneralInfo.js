@@ -22,19 +22,19 @@ const GeneralInfo = ({onSubmit}) => {
         <div>
             {editMode ? (
                 <form onSubmit = {handleSubmit}>
-                    <div>
+                    <div className="form-group">
                         <label>Name:</label>
-                        <input type = "text" name = "name" value = {info.name} onChange = {handleChange}/>
+                        <input type = "text" name = "name" value = {info.name} onChange = {handleChange} className="input-field"/>
                     </div>
-                    <div>
+                    <div className="form-group">
                         <label>Email:</label>
-                        <input type="email" name = "email" value = {info.email} onChange = {handleChange}/>
+                        <input type="email" name = "email" value = {info.email} onChange = {handleChange} className="input-field"/>
                     </div>
-                    <div>
+                    <div className="form-group">
                         <label>Phone:</label>
-                        <input type="text" name="phone" value= {info.phone} onChange= {handleChange}/>
+                        <input type="text" name="phone" value= {info.phone} onChange= {handleChange} className="input-field"/>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button type="submit" className= "submit-button">Submit</button>
                 </form>
             ) : (
                 <div>

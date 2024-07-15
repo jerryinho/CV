@@ -1,52 +1,84 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-const Education = ({onSubmit}) => {
-    const [editMode, setEditMode] = useState(true);
-    const [education, setEducation] = useState ({
-        schoolName:'',
-        titleOfStudy:'',
-        dateOfStudy:'',
+const Education = ({ educationList, onSubmit, onEdit, onDelete }) => {
+  const [educations, setEducations] = useState(educationList || []);
+  const [newEducation, setNewEducation] = useState({
+    schoolName: '',
+    studyTitle: '',
+    studyDate: '',
+  });
+
+  const [editMode, setEditMode] = useState(true);
+
+  const handleChange = (e) => {
+    setNewEducation({ ...newEducation, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Add new education to educations array
+    setEducations([...educations, newEducation]);
+
+    // Clear the form for the next entry
+    setNewEducation({
+      schoolName: '',
+      studyTitle: '',
+      studyDate: '',
     });
+  };
 
-    const handleChange = (e) => {
-        setEducation({...education, [e.target.name]: e.target.value});
-    }
+  const handleDelete = (index) => {
+    const updatedEducations = [...educations];
+    updatedEducations.splice(index,1);
+    setEducations(updatedEducations)
+  }
+  
+  const handleCancel = () => {
+    setNewEducation({
+      schoolName:'',
+      studyTitle:'',
+      studyDate:'',
+    })
+  }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setEditMode(false);
-        onSubmit(education);
-    }
+  return (
+    <div className="section-container">
+      <h2>Educational Experience</h2>
+      <div className="scrollable-container">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>School Name: </label>
+            <input type="text" name="schoolName" value={newEducation.schoolName} onChange={handleChange} className="input-field" />
+          </div>
+          <div className="form-group">
+            <label>Study Title: </label>
+            <input type="text" name="studyTitle" value={newEducation.studyTitle} onChange={handleChange} className="input-field" />
+          </div>
+          <div className="form-group">
+            <label>Date of Study: </label>
+            <input type="date" name="studyDate" value={newEducation.studyDate} onChange={handleChange} className="input-field" />
+          </div>
+          <button type="submit" className="submit-button">Add Education</button>
+          <button type= 'button' onClick={handleCancel} className = "cancel-button">Cancel</button>
+        </form>
 
-    return (
-        <div>
-        {editMode ? (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>School Name: </label>
-              <input type="text" name="schoolName" value={education.schoolName} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Title of Study: </label>
-              <input type="text" name="titleOfStudy" value={education.titleOfStudy} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Date of Study: </label>
-              <input type="text" name="dateOfStudy" value={education.dateOfStudy} onChange={handleChange} />
-            </div>
-            <button type="submit">Submit</button>
-          </form>
-        ) : (
+        {educations.length > 0 && (
           <div>
-            <p>School Name: {education.schoolName}</p>
-            <p>Title of Study: {education.titleOfStudy}</p>
-            <p>Date of Study: {education.dateOfStudy}</p>
-            <button onClick={() => setEditMode(true)}>Edit</button>
+            <h3>Previous Educations:</h3>
+            {educations.map((education, index) => (
+              <div key={index} className="education-entry">
+                <p><strong>School Name:</strong> {education.schoolName}</p>
+                <p><strong>Study Title:</strong> {education.studyTitle}</p>
+                <p><strong>Date of Study:</strong> {education.studyDate}</p>
+                <button onClick={() => handleDelete(index)} className='delete-button'>Delete</button>
+              </div>
+            ))}
           </div>
         )}
       </div>
-    );
-
-}
+    </div>
+  );
+};
 
 export default Education;
