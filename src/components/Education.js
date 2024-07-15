@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-const Education = ({ onSubmit }) => {
-  const [educations, setEducations] = useState([]);
+const Education = ({ educationList, onSubmit, onEdit, onDelete }) => {
+  const [educations, setEducations] = useState(educationList || []);
   const [newEducation, setNewEducation] = useState({
     schoolName: '',
     studyTitle: '',
     studyDate: '',
   });
+
+  const [editMode, setEditMode] = useState(true);
 
   const handleChange = (e) => {
     setNewEducation({ ...newEducation, [e.target.name]: e.target.value });
@@ -26,6 +28,20 @@ const Education = ({ onSubmit }) => {
     });
   };
 
+  const handleDelete = (index) => {
+    const updatedEducations = [...educations];
+    updatedEducations.splice(index,1);
+    setEducations(updatedEducations)
+  }
+  
+  const handleCancel = () => {
+    setNewEducation({
+      schoolName:'',
+      studyTitle:'',
+      studyDate:'',
+    })
+  }
+
   return (
     <div className="section-container">
       <h2>Educational Experience</h2>
@@ -44,6 +60,7 @@ const Education = ({ onSubmit }) => {
             <input type="date" name="studyDate" value={newEducation.studyDate} onChange={handleChange} className="input-field" />
           </div>
           <button type="submit" className="submit-button">Add Education</button>
+          <button type= 'button' onClick={handleCancel} className = "cancel-button">Cancel</button>
         </form>
 
         {educations.length > 0 && (
@@ -54,6 +71,7 @@ const Education = ({ onSubmit }) => {
                 <p><strong>School Name:</strong> {education.schoolName}</p>
                 <p><strong>Study Title:</strong> {education.studyTitle}</p>
                 <p><strong>Date of Study:</strong> {education.studyDate}</p>
+                <button onClick={() => handleDelete(index)} className='delete-button'>Delete</button>
               </div>
             ))}
           </div>

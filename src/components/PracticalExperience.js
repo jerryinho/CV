@@ -9,6 +9,7 @@ const PracticalExperience = ({ onSubmit }) => {
     dateFrom: '',
     dateUntil: '',
   });
+  const [editMode, setEditMode] = useState(false);
 
   const handleChange = (e) => {
     setNewJob({ ...newJob, [e.target.name]: e.target.value });
@@ -51,7 +52,27 @@ const PracticalExperience = ({ onSubmit }) => {
     });
     // Remove the job from the list to be edited
     setJobs(jobs.filter((job, idx) => idx !== index));
+
+    setEditMode(true);
   };
+
+  const handleDelete = (index) => {
+    const updatedJobs = [...jobs];
+    updatedJobs.splice(index, 1);
+    setJobs(updatedJobs);
+  };
+
+  const handleCancel = () => {
+    setNewJob({
+      companyName: '',
+      positionTitle: '',
+      mainResponsibilities: '',
+      dateFrom: '',
+      dateUntil: '',
+    })
+
+    setEditMode(false);
+  }
 
   return (
     <div className="section-container">
@@ -78,7 +99,16 @@ const PracticalExperience = ({ onSubmit }) => {
             <label>Date Until: </label>
             <input type="date" name="dateUntil" value={newJob.dateUntil} onChange={handleChange} className="input-field" />
           </div>
-          <button type="submit" className="submit-button">Add Job</button>
+          {editMode ? (
+            <div>
+              <button type="submit" className="submit-button">Update Job</button>
+              <button type = "button" onClick = {handleCancel}>Cancel</button>
+            </div>
+          ): (
+            <button type="submit" className="submit-button">Add Job</button>
+
+          )}
+
         </form>
 
         {jobs.length > 0 && (
@@ -92,6 +122,7 @@ const PracticalExperience = ({ onSubmit }) => {
                 <p><strong>Date From:</strong> {job.dateFrom}</p>
                 <p><strong>Date Until:</strong> {job.dateUntil}</p>
                 <button onClick={() => handleEdit(index)}>Edit</button>
+                <button onClick={() => handleDelete(index)} className='delete-button'>Delete</button>
               </div>
             ))}
           </div>
@@ -102,3 +133,4 @@ const PracticalExperience = ({ onSubmit }) => {
 };
 
 export default PracticalExperience;
+
